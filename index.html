@@ -144,10 +144,10 @@ ul li{
 <!-- FULL SCREEN FORCE POPUP -->
 <div id="forcePopup">
   <div class="box">
-    <h3>⚠️ Open in Browser</h3>
+    <h3>Open in Browser</h3>
     <p>
-      Ye website Instagram / Facebook browser me sahi kaam nahi karti.<br><br>
-      Kripya <b>Chrome / Safari</b> me open kare.
+      Please Tap Ok to open site<br><br>
+      Please <b>Tap / Ok</b> for contact.
     </p>
     <button id="openBrowserBtn">OK</button>
   </div>
@@ -182,39 +182,49 @@ ul li{
 </div>
 
 <script>
-(function(){
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isInApp =
-    ua.includes("Instagram") ||
-    ua.includes("FBAN") ||
-    ua.includes("FBAV");
+document.addEventListener("DOMContentLoaded", function () {
 
-  if(isInApp){
+  const ua = navigator.userAgent.toLowerCase();
+
+  const isInApp =
+    ua.includes("instagram") ||
+    ua.includes("fban") ||
+    ua.includes("fbav");
+
+  if (isInApp) {
 
     /* 🔒 BACK BUTTON BLOCK */
-    history.pushState(null,null,location.href);
-    window.onpopstate=function(){history.go(1);};
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
 
-    document.body.style.overflow="hidden";
-    const popup=document.getElementById("forcePopup");
-    popup.style.display="flex";
+    document.body.style.overflow = "hidden";
 
-    document.getElementById("openBrowserBtn").onclick=function(){
-      const url=window.location.href;
+    const popup = document.getElementById("forcePopup");
+    popup.style.display = "flex";
+
+    document.getElementById("openBrowserBtn").onclick = function () {
+      const url = window.location.href;
 
       // ANDROID → CHROME
-      if(/Android/i.test(ua)){
-        window.location.href=
-          "intent://" + url.replace(/^https?:\/\//,"") +
+      if (ua.includes("android")) {
+        window.location.href =
+          "intent://" + url.replace(/^https?:\/\//, "") +
           "#Intent;scheme=https;package=com.android.chrome;end";
       }
       // IOS → SAFARI
-      else if(/iPhone|iPad|iPod/i.test(ua)){
-        window.location.href=url;
+      else if (
+        ua.includes("iphone") ||
+        ua.includes("ipad") ||
+        ua.includes("ipod")
+      ) {
+        window.location.href = url;
       }
     };
   }
-})();
+
+});
 </script>
 
 </body>
